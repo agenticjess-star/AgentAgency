@@ -293,6 +293,50 @@ const TYPE_RAIL: Record<string, string> = {
   deal_won: "#4ade80",
 };
 
+/* ── Mission briefing strip ─────────────────────────────────────────── */
+function MissionHeader({
+  activeCount, failedCount, totalLeads, summaryLoading,
+}: { activeCount: number; failedCount: number; totalLeads: number; summaryLoading: boolean }) {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  const timeStr = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
+
+  const systemStatus = failedCount > 0
+    ? { label: `${failedCount} run${failedCount > 1 ? "s" : ""} failed`, color: "text-red-500", dot: "bg-red-500" }
+    : activeCount > 0
+    ? { label: `${activeCount} run${activeCount > 1 ? "s" : ""} active`, color: "text-accent", dot: "bg-accent animate-pulse" }
+    : { label: "System idle", color: "text-emerald-600", dot: "bg-emerald-500" };
+
+  return (
+    <div className="flex items-center justify-between border border-border bg-card px-5 py-3">
+      <div className="flex items-center gap-5">
+        <div className="flex items-center gap-2">
+          <div className={cn("w-1.5 h-1.5 rounded-full shrink-0", systemStatus.dot)} />
+          <span className={cn("font-mono text-[10px] uppercase tracking-widest", systemStatus.color)}>
+            {systemStatus.label}
+          </span>
+        </div>
+        <div className="w-px h-3 bg-border" />
+        {!summaryLoading && (
+          <span className="font-mono text-[10px] text-secondary-foreground uppercase tracking-wider">
+            {totalLeads} total leads in system
+          </span>
+        )}
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="font-mono text-[10px] text-secondary-foreground uppercase tracking-wider hidden sm:block">
+          {dateStr} · {timeStr}
+        </span>
+        <Link href="/leads">
+          <button className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-secondary-foreground border border-border px-3 py-1.5 hover:border-foreground hover:text-foreground transition-colors">
+            + Inject Lead
+          </button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 /* ── Dashboard ──────────────────────────────────────────────────────── */
 const DashboardPage: FC = () => {
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -328,6 +372,14 @@ const DashboardPage: FC = () => {
   return (
     <DashboardLayout>
       <div className="space-y-5">
+
+        {/* ── Mission header ───────────────────────────────────────────── */}
+        <MissionHeader
+          activeCount={activeRuns.length}
+          failedCount={failedRuns.length}
+          totalLeads={summary?.totalLeads ?? 0}
+          summaryLoading={summaryLoading}
+        />
 
         {/* ── Alert strip ─────────────────────────────────────────────── */}
         <AnimatePresence>
@@ -648,10 +700,24 @@ const DashboardPage: FC = () => {
                     <ExternalLink className="w-3.5 h-3.5 text-secondary-foreground shrink-0" />
                     <div>
                       <div className="font-mono text-[10px] uppercase tracking-wider text-foreground">
-                        Message Agents
+                        Agent Roster
                       </div>
                       <div className="font-mono text-[9px] text-secondary-foreground mt-0.5">
-                        Open Slack agent console
+                        View system prompts &amp; I/O contracts
+                      </div>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-secondary-foreground ml-auto group-hover:text-foreground transition-colors" />
+                  </div>
+                </Link>
+                <Link href="/skills">
+                  <div className="flex items-center gap-2.5 px-3 py-2.5 border border-border hover:border-foreground hover:bg-muted/30 transition-colors cursor-pointer group">
+                    <ExternalLink className="w-3.5 h-3.5 text-secondary-foreground shrink-0" />
+                    <div>
+                      <div className="font-mono text-[10px] uppercase tracking-wider text-foreground">
+                        Skills Directory
+                      </div>
+                      <div className="font-mono text-[9px] text-secondary-foreground mt-0.5">
+                        22 skill modules — full reference docs
                       </div>
                     </div>
                     <ChevronRight className="w-3.5 h-3.5 text-secondary-foreground ml-auto group-hover:text-foreground transition-colors" />

@@ -14,6 +14,27 @@
     "tags": ["meta", "skills", "registry", "platform"]
   },
   {
+    "slug": "business-builder",
+    "name": "Business Builder",
+    "description": "Coordinates all 7 agents to take a target SMB from zero to a full production-ready web presence — site, copy, schema, and offer package.",
+    "agent": "Platform",
+    "tags": ["pipeline", "build", "coordination", "smb"]
+  },
+  {
+    "slug": "product-manager",
+    "name": "Product Manager",
+    "description": "Structure features, prioritize the backlog, and write PRDs for Outbound Studio improvements and new agent capabilities.",
+    "agent": "Platform",
+    "tags": ["prd", "roadmap", "planning", "prioritization"]
+  },
+  {
+    "slug": "ai-secretary",
+    "name": "AI Secretary",
+    "description": "Manage email drafts, follow-up cadences, operator briefings, and deal tracking across the full outbound pipeline.",
+    "agent": "Platform",
+    "tags": ["email", "scheduling", "tasks", "follow-up"]
+  },
+  {
     "slug": "prospector",
     "name": "Prospector",
     "description": "Discovers SMBs with weak or missing web presence across target verticals and geos using multi-source search aggregation.",
@@ -121,7 +142,7 @@
   {
     "slug": "ai-sdr",
     "name": "AI SDR",
-    "description": "Full AI sales development representative — end-to-end outbound prospecting, qualification, and sequence management.",
+    "description": "Full AI sales development representative — end-to-end outbound prospecting, ICP definition, trigger-event sourcing, and qualification.",
     "agent": "07 · Outreach",
     "tags": ["sdr", "outbound", "sales", "automation"]
   },

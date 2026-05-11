@@ -49,11 +49,11 @@ An AI-native outbound sales system — a 7-agent crew that finds SMBs with weak 
 ## Product
 
 - **Public landing page**: Dark full-bleed page. Animated typewriter terminal demo, 7-agent pipeline diagram with feedback loop arrows, AEO thesis with stats, 3-tier pricing.
-- **Skills directory** (`/skills`, `/skills/:slug`): Public reference docs for all 19 skill modules. Searchable, grouped by agent, markdown-rendered detail pages.
+- **Skills directory** (`/skills`, `/skills/:slug`): Public reference docs for all 22 skill modules. Searchable, grouped by agent, markdown-rendered detail pages. New modules: AI Secretary, Business Builder, Product Manager.
 - **Dashboard** (`/dashboard`): Redesigned command center. Alert strip for failed runs. 5 KPI stats. Left panel: Pipeline runs (rich cards with colored status strips + 7-step progress visualizer) + filter tabs (All/Running/Pending/Done/Failed) + Analytics tab (vertical breakdown chart). Right panel: Needs Attention queue + Quick Actions + live System Log. Click any run card → run detail.
 - **Leads console** (`/leads`): Searchable operator table, status pills, "Inject Lead" right-side sheet, full lead detail with pipeline run history and "Execute Sequence" trigger.
 - **Runs console** (`/runs`): 7-step pipeline progress strip per run, colored by status. Run detail: telemetry terminal, email draft viewer, audit score ring, site URL.
-- **Agents console** (`/agents`): Two-panel Slack messenger. Live channel list (public + DMs). Dark terminal message stream with 8s auto-poll. Send to any channel — reach any agent on any Slack-connected platform.
+- **Agents console** (`/agents`): Two-tab interface. **Roster tab**: all 7 agents with numbered badges, roles, input/output contracts, connected tools, and expandable system prompts (collapsible terminal block). Each agent links to its Skill Docs. **Slack tab**: live channel list (public + DMs), dark terminal message stream with 8s auto-poll, send to any channel.
 - **Settings** (`/settings`): Integration key management. Configure Firecrawl, Browserbase, Supabase (URL + anon + service keys), Telegram bot + chat ID, n8n webhook. Webhook endpoint docs. Slack status (connected via Replit). Keys saved to localStorage.
 
 ## Integration Ecosystem (Hyperagent connected tools)

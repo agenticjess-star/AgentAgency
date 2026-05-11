@@ -40,7 +40,8 @@ const SkillsPage: FC = () => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetch("/skills/index.json")
+    const base = import.meta.env.BASE_URL;
+    fetch(`${base}skills/index.json`)
       .then((r) => r.json())
       .then((data) => { setSkills(data); setLoading(false); })
       .catch(() => setLoading(false));

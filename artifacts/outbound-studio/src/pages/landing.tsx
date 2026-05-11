@@ -69,11 +69,11 @@ const AGENTS = [
 
 const AGENT_DESCS = [
   "Identifies SMBs with weak or missing web presence across verticals and geos.",
-  "Audits the target site and builds the competitive pitch strategy.",
+  "Audits the target site and develops the competitive pitch strategy.",
   "Generates a superior version of their site, built on spec — no charge yet.",
-  "Scores the built site against 40+ AEO criteria. Loops to Builder if below threshold.",
+  "Validates the deliverable against AEO best practices before release.",
   "Bundles the site and offer assets into a ready-to-claim package.",
-  "Runs 3 ICPs against the offer. Loops to Packager if conversion rate fails.",
+  "Stress-tests the offer against target customer profiles before launch.",
   "Dispatches the personalized 7-day claim sequence to the business owner.",
 ];
 

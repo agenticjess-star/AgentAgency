@@ -12,59 +12,75 @@ const RunsPage: FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="heading-lg">Pipeline Runs</h1>
+      <div className="space-y-5">
+
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="heading-lg">Pipeline Runs</h1>
+            <p className="caption mt-0.5">{runs?.length ?? 0} sequences in log</p>
+          </div>
         </div>
 
         <div className="border border-border bg-card">
-          <div className="w-full overflow-auto">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left op-table">
               <thead>
-                <tr className="border-b border-border font-mono text-xs uppercase text-secondary-foreground">
-                  <th className="p-4 font-normal">Timestamp</th>
-                  <th className="p-4 font-normal">Target</th>
-                  <th className="p-4 font-normal">Status</th>
-                  <th className="p-4 font-normal">Current Stage</th>
-                  <th className="p-4 font-normal text-right">Actions</th>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Target</th>
+                  <th>Status</th>
+                  <th className="hidden md:table-cell">Stage</th>
+                  <th className="hidden lg:table-cell">Audit</th>
+                  <th className="text-right">Console</th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading ? (
                   Array(5).fill(0).map((_, i) => (
-                    <tr key={i} className="border-b border-border">
-                      <td className="p-4"><Skeleton className="h-5 w-24" /></td>
-                      <td className="p-4"><Skeleton className="h-5 w-32" /></td>
-                      <td className="p-4"><Skeleton className="h-5 w-24" /></td>
-                      <td className="p-4"><Skeleton className="h-5 w-24" /></td>
-                      <td className="p-4"></td>
+                    <tr key={i}>
+                      <td><Skeleton className="h-4 w-24" /></td>
+                      <td><Skeleton className="h-4 w-32" /></td>
+                      <td><Skeleton className="h-5 w-20" /></td>
+                      <td className="hidden md:table-cell"><Skeleton className="h-4 w-24" /></td>
+                      <td className="hidden lg:table-cell"><Skeleton className="h-4 w-12" /></td>
+                      <td />
                     </tr>
                   ))
                 ) : runs?.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-secondary-foreground font-mono text-sm">
-                      No sequences executed.
+                    <td colSpan={6} className="py-12 text-center font-mono text-xs text-secondary-foreground">
+                      No sequences executed yet.
                     </td>
                   </tr>
                 ) : (
-                  runs?.map(run => (
-                    <tr key={run.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
-                      <td className="p-4 font-mono text-xs text-secondary-foreground">
-                        {new Date(run.createdAt).toLocaleString()}
+                  runs?.map((run) => (
+                    <tr key={run.id}>
+                      <td className="font-mono text-[11px] text-secondary-foreground whitespace-nowrap">
+                        {new Date(run.createdAt).toLocaleString("en-US", {
+                          month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
+                        })}
                       </td>
-                      <td className="p-4 font-medium text-sm">
-                        {run.businessName || `Lead #${run.leadId}`}
+                      <td>
+                        <div className="font-medium text-[13px]">{run.businessName || `Lead #${run.leadId}`}</div>
+                        <div className="font-mono text-[10px] text-secondary-foreground mt-0.5">#{run.id}</div>
                       </td>
-                      <td className="p-4">
-                        <StatusPill status={run.status} />
-                      </td>
-                      <td className="p-4 font-mono text-sm capitalize">
+                      <td><StatusPill status={run.status} /></td>
+                      <td className="hidden md:table-cell font-mono text-[11px] text-secondary-foreground capitalize">
                         {run.currentAgent.replace(/_/g, " ")}
                       </td>
-                      <td className="p-4 text-right">
+                      <td className="hidden lg:table-cell font-mono text-[12px]">
+                        {run.auditScore != null ? (
+                          <span className={run.auditScore >= 80 ? "text-emerald-600" : run.auditScore >= 60 ? "text-amber-600" : "text-red-600"}>
+                            {run.auditScore}<span className="text-secondary-foreground text-[10px]">/100</span>
+                          </span>
+                        ) : (
+                          <span className="text-secondary-foreground">—</span>
+                        )}
+                      </td>
+                      <td className="text-right">
                         <Link href={`/runs/${run.id}`}>
-                          <Button variant="ghost" size="sm" className="font-mono text-xs uppercase text-secondary-foreground hover:text-foreground">
-                            Console <ChevronRight className="w-3 h-3 ml-1" />
+                          <Button variant="ghost" size="sm" className="font-mono text-[10px] uppercase tracking-wider text-secondary-foreground hover:text-foreground h-7 px-2 gap-1">
+                            Open <ChevronRight className="w-3 h-3" />
                           </Button>
                         </Link>
                       </td>

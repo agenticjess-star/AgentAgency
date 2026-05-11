@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @layer theme, base, clerk, components, utilities;
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -23,7 +23,7 @@
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
 
@@ -37,91 +37,265 @@
   --color-destructive-foreground: var(--destructive-foreground);
 
   --font-sans: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', 'SF Mono', Consolas, monospace;
 
-  --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 6px;
-  --radius-xl: 8px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 4px;
 }
 
+/* ─── LIGHT (DASHBOARD) THEME ─────────────────────────────────────── */
 :root {
-  --background: #eeeeee;
-  --foreground: #020202;
-  --border: #b8b3b0;
-  --input: #b8b3b0;
-  --ring: #ef6f2e;
+  --background: #f0eeeb;
+  --foreground: #0a0a0a;
+  --border: #c8c3bf;
+  --input: #c8c3bf;
+  --ring: #ea580c;
 
-  --card: #fafafa;
-  --card-foreground: #020202;
-  --card-border: #b8b3b0;
+  --card: #fafaf8;
+  --card-foreground: #0a0a0a;
+  --card-border: #c8c3bf;
 
-  --popover: #fafafa;
-  --popover-foreground: #020202;
+  --popover: #fafaf8;
+  --popover-foreground: #0a0a0a;
   --popover-border: #3d3a39;
 
-  --primary: #020202;
-  --primary-foreground: #fafafa;
+  --primary: #0a0a0a;
+  --primary-foreground: #fafaf8;
 
-  --secondary: #b8b3b0;
-  --secondary-foreground: #020202;
+  --secondary: #9a9490;
+  --secondary-foreground: #0a0a0a;
 
-  --muted: #e5e5e5;
-  --muted-foreground: #b8b3b0;
+  --muted: #e5e2de;
+  --muted-foreground: #9a9490;
 
-  --accent: #ef6f2e;
-  --accent-foreground: #fafafa;
+  --accent: #ea580c;
+  --accent-foreground: #ffffff;
 
-  --destructive: #ff4444;
+  --destructive: #dc2626;
   --destructive-foreground: #ffffff;
 
-  --chart-1: #ef6f2e;
-  --chart-2: #3d3a39;
-  --chart-3: #b8b3b0;
-  --chart-4: #020202;
-  --chart-5: #666666;
+  --success: #16a34a;
+  --warning: #d97706;
 
-  --radius: 6px;
+  --chart-1: #ea580c;
+  --chart-2: #3d3a39;
+  --chart-3: #9a9490;
+  --chart-4: #0a0a0a;
+  --chart-5: #666260;
+
+  --radius: 2px;
+  --sidebar-width: 220px;
+  --sidebar-collapsed-width: 56px;
+  --topbar-height: 48px;
 }
 
+/* ─── DARK LANDING THEME ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --background: #000000;
+  --foreground: #f0eeeb;
+  --border: #282828;
+  --input: #1a1a1a;
+  --ring: #ea580c;
+
+  --card: #111111;
+  --card-foreground: #f0eeeb;
+  --card-border: #2a2a2a;
+
+  --popover: #111111;
+  --popover-foreground: #f0eeeb;
+  --popover-border: #282828;
+
+  --primary: #f0eeeb;
+  --primary-foreground: #000000;
+
+  --secondary: #666260;
+  --secondary-foreground: #f0eeeb;
+
+  --muted: #1a1a1a;
+  --muted-foreground: #666260;
+
+  --accent: #ea580c;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+}
+
+/* ─── BASE STYLES ─────────────────────────────────────────────────── */
 @layer base {
+  html, body {
+    @apply bg-background text-foreground;
+  }
   * {
     @apply border-border;
   }
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-normal tracking-tight;
   }
-  .display-text {
-    font-size: 60px;
+
+  /* ── Type scale ── */
+  .display-xl {
+    font-size: clamp(48px, 7vw, 96px);
     line-height: 1;
-    letter-spacing: -2.88px;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+  }
+  .display-lg {
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+  .display-text {
+    font-size: clamp(28px, 3.5vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 400;
   }
   .heading-lg {
-    font-size: 48px;
+    font-size: clamp(22px, 2.5vw, 32px);
     line-height: 1.2;
-    letter-spacing: -2.3px;
+    letter-spacing: -0.02em;
+    font-weight: 400;
   }
   .heading {
-    font-size: 24px;
-    line-height: 1.2;
+    font-size: 20px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
   }
   .subheading {
-    font-size: 18px;
-    line-height: 1.2;
+    font-size: clamp(15px, 1.5vw, 18px);
+    line-height: 1.5;
+    font-weight: 300;
   }
   .body-text {
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.6;
   }
   .body-sm {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
   .caption {
-    font-size: 12px;
     font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
+
+  /* ── Selection ── */
+  ::selection { background: #ea580c; color: #ffffff; }
+}
+
+/* ─── COMPONENT HELPERS ───────────────────────────────────────────── */
+@layer components {
+  /* Mono label */
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+
+  /* Operator table */
+  .op-table thead th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-weight: 400;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--muted);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .op-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .op-table tbody tr:last-child td { border-bottom: none; }
+  .op-table tbody tr:hover { background: color-mix(in srgb, var(--muted) 60%, transparent); }
+
+  /* Status band */
+  .status-band {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--border);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .status-band-item {
+    flex: 1;
+    padding: 14px 20px;
+    border-right: 1px solid var(--border);
+    min-width: 0;
+  }
+  .status-band-item:last-child { border-right: none; }
+
+  /* Terminal block */
+  .terminal {
+    background: #0d0d0d;
+    border: 1px solid #2a2a2a;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: #a8b0a0;
+    padding: 20px;
+    overflow-x: auto;
+  }
+  .terminal .t-prompt { color: #ea580c; }
+  .terminal .t-dim { color: #555; }
+  .terminal .t-success { color: #4ade80; }
+  .terminal .t-info { color: #60a5fa; }
+
+  /* Agent pipeline node */
+  .pipeline-node {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    position: relative;
+    z-index: 2;
+    transition: border-color 200ms, background-color 200ms;
+  }
+  .pipeline-node.active {
+    border-color: #ea580c;
+    background: rgba(234, 88, 12, 0.08);
+    color: #ea580c;
+  }
+  .pipeline-node.completed {
+    border-color: #4ade80;
+    background: rgba(74, 222, 128, 0.06);
+    color: #4ade80;
   }
 }

@@ -9,6 +9,8 @@ import LeadsPage from "@/pages/leads/index";
 import LeadDetailPage from "@/pages/leads/detail";
 import RunsPage from "@/pages/runs/index";
 import RunDetailPage from "@/pages/runs/detail";
+import SkillsPage from "@/pages/skills/index";
+import SkillDetailPage from "@/pages/skills/detail";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -24,22 +26,22 @@ function stripBase(path: string): string {
 const clerkAppearance = {
   cssLayerName: "clerk",
   variables: {
-    colorPrimary: "#ef6f2e", // Code Orange
-    colorForeground: "#020202", // Factory Black
-    colorMutedForeground: "#b8b3b0", // Cool Gray
-    colorDanger: "#ff4444",
-    colorBackground: "#fafafa", // Faded Silver (Card background)
-    colorInput: "#eeeeee", // Factory Light Gray
-    colorInputForeground: "#020202",
-    colorNeutral: "#b8b3b0",
+    colorPrimary: "#ea580c",
+    colorForeground: "#0a0a0a",
+    colorMutedForeground: "#9a9490",
+    colorDanger: "#dc2626",
+    colorBackground: "#f0eeeb",
+    colorInput: "#e5e2de",
+    colorInputForeground: "#0a0a0a",
+    colorNeutral: "#9a9490",
     fontFamily: "Inter, sans-serif",
-    borderRadius: "6px",
+    borderRadius: "2px",
   },
   elements: {
     rootBox: "w-full flex justify-center",
-    cardBox: "bg-[#fafafa] rounded-md w-[440px] max-w-full overflow-hidden border border-[#b8b3b0]",
+    cardBox: "bg-[#fafaf8] rounded-none w-[440px] max-w-full overflow-hidden border border-[#c8c3bf]",
     card: "!shadow-none !border-0 !bg-transparent !rounded-none",
-    footer: "!shadow-none !border-0 !bg-transparent !rounded-none bg-[#eeeeee] border-t border-[#b8b3b0]",
+    footer: "!shadow-none !border-0 !bg-transparent !rounded-none bg-[#f0eeeb] border-t border-[#c8c3bf]",
   },
 };
 
@@ -93,10 +95,7 @@ function ClerkQueryClientCacheInvalidator() {
   useEffect(() => {
     const unsubscribe = addListener(({ user }) => {
       const userId = user?.id ?? null;
-      if (
-        prevUserIdRef.current !== undefined &&
-        prevUserIdRef.current !== userId
-      ) {
+      if (prevUserIdRef.current !== undefined && prevUserIdRef.current !== userId) {
         qc.clear();
       }
       prevUserIdRef.current = userId;
@@ -125,13 +124,16 @@ function ClerkProviderWithRoutes() {
           <Route path="/" component={HomeRedirect} />
           <Route path="/sign-in/*?" component={SignInPage} />
           <Route path="/sign-up/*?" component={SignUpPage} />
-          
+
+          <Route path="/skills" component={SkillsPage} />
+          <Route path="/skills/:slug" component={SkillDetailPage} />
+
           <Route path="/dashboard"><ProtectedRoute component={DashboardPage} /></Route>
           <Route path="/leads"><ProtectedRoute component={LeadsPage} /></Route>
           <Route path="/leads/:id"><ProtectedRoute component={LeadDetailPage} /></Route>
           <Route path="/runs"><ProtectedRoute component={RunsPage} /></Route>
           <Route path="/runs/:id"><ProtectedRoute component={RunDetailPage} /></Route>
-          
+
           <Route component={NotFound} />
         </Switch>
       </QueryClientProvider>

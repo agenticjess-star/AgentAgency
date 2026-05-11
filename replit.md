@@ -28,29 +28,33 @@ An AI-native outbound sales system — a 7-agent crew that finds SMBs with weak 
 - `lib/api-zod/` — generated Zod schemas (from codegen)
 - `lib/api-client-react/` — generated React Query hooks (from codegen)
 - `artifacts/api-server/src/routes/` — Express route handlers (`leads.ts`, `runs.ts`, `pipeline.ts`)
-- `artifacts/outbound-studio/src/pages/` — frontend pages (landing, dashboard, leads, runs)
-- `artifacts/outbound-studio/src/index.css` — design tokens (Factory.ai aesthetic)
-- `.agents/skills/outbound-studio/SKILL.md` — full system knowledge base for this product
+- `artifacts/outbound-studio/src/pages/` — frontend pages (landing, dashboard, leads, runs, skills)
+- `artifacts/outbound-studio/src/index.css` — design tokens (dual-theme: dark landing + light dashboard)
+- `artifacts/outbound-studio/public/skills/` — public skills directory (index.json + per-agent .md files)
+- `.agents/skills/outbound-studio/SKILL.md` — full 7-agent system knowledge base
 
 ## Architecture decisions
 
-- **Public/private split**: Landing page is fully public. Dashboard/leads/runs require Clerk auth. Internal agent mechanics are never exposed on the public page.
+- **Public/private split**: Landing page + `/skills` directory are fully public. Dashboard/leads/runs require Clerk auth.
+- **Dual theme**: Landing page uses `data-theme="dark"` (black bg, #EA580C accent) — applied per-page, not globally. Dashboard uses warm light theme (`#f0eeeb` bg, `#fafaf8` cards).
 - **Contract-first API**: OpenAPI spec drives all server validation (Zod) and client data fetching (React Query hooks). Never hand-write fetch calls.
-- **Factory.ai aesthetic**: `#eeeeee` bg, `#fafafa` cards, `#020202` text, `#ef6f2e` Code Orange accent, Inter font, zero shadows/gradients, mono uppercase labels.
+- **Design system**: JetBrains Mono for all mono labels, Inter for body. Zero shadows, zero border-radius (2px max). Uppercase mono labels everywhere.
 - **Clerk proxy pattern**: API server uses `publishableKeyFromHost` so the same backend works across dev preview domains and production.
 - **DB first, seed early**: 10 leads + 4 pipeline runs + 8 activity items seeded for immediate dashboard utility.
 
 ## Product
 
-- **Public landing page**: Showcases the 7-agent pipeline concept and AEO pitch without exposing mechanics. "ACCESS CONSOLE" CTA leads to auth.
-- **Dashboard**: Aggregate pipeline stats (total leads, active runs, won deals, revenue, conversion rate), activity feed, vertical breakdown chart.
-- **Leads console**: Searchable lead table with status pills; "Inject Lead" modal for adding new prospects; full detail view per lead with pipeline run history and "Execute Sequence" trigger.
-- **Runs console**: All pipeline runs with agent telemetry, logs, generated email drafts, and audit scores.
+- **Public landing page**: Dark full-bleed page. Animated typewriter terminal demo, 7-agent pipeline diagram with feedback loop arrows, AEO thesis with stats, 3-tier pricing. No internal agent mechanics exposed.
+- **Skills directory** (`/skills`, `/skills/:slug`): Public reference docs for all 12 agent skill modules. Grouped by agent, markdown-rendered detail pages fetched from `public/skills/`.
+- **Dashboard**: Status band with 5 live KPIs, vertical breakdown bar chart, real-time activity feed. Collapsible sidebar, mobile bottom tab bar.
+- **Leads console**: Searchable operator table with sticky header, status pills, "Inject Lead" modal, full detail view with pipeline run history and "Execute Sequence" trigger.
+- **Runs console**: Audit score column with color-coded thresholds, agent progress tracker, dark terminal for telemetry logs, generated email draft viewer.
 
 ## User preferences
 
 - Internal system mechanics (agent names, prompts, tools) must NOT appear on the public landing page.
-- Design aesthetic: strict Factory.ai technical brutalism — no shadows, no gradients, mono labels uppercase.
+- Design aesthetic: strict technical brutalism — no shadows, no gradients, JetBrains Mono labels, uppercase.
+- Dark landing / light dashboard split — never mix the two themes.
 
 ## Gotchas
 
@@ -58,6 +62,10 @@ An AI-native outbound sales system — a 7-agent crew that finds SMBs with weak 
 - `afterSignInUrl`/`afterSignUpUrl`/`afterSignOutUrl` do not exist in `@clerk/react` v5 — remove them from `ClerkProvider` and `UserButton`.
 - `@clerk/themes` does not exist as a package — do not import from it.
 - API server port is 8080 (mapped via artifact.toml to `/api` on the shared proxy at port 80).
+- `data-theme="dark"` wrapper is applied per-page (landing, skills) — not on the root body or a global theme toggle.
+- Skills markdown files are served from `public/skills/*.md` via Vite's static asset serving (no API route needed).
+- The `op-table` CSS class (defined in `index.css`) should be applied to all operator data tables — it provides sticky header, row hover, and mono column labels.
+- The `status-band` / `status-band-item` CSS classes provide the KPI strip layout — use for all stat displays.
 
 ## Pointers
 

@@ -3,20 +3,25 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Outbound Studio API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: leads
+    description: Lead management
+  - name: runs
+    description: Pipeline run management
+  - name: pipeline
+    description: Pipeline summary and status
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +29,413 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /leads:
+    get:
+      operationId: listLeads
+      tags: [leads]
+      summary: List all leads
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: vertical
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of leads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lead"
+    post:
+      operationId: createLead
+      tags: [leads]
+      summary: Create a new lead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+
+  /leads/{id}:
+    get:
+      operationId: getLead
+      tags: [leads]
+      summary: Get a lead by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lead
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateLead
+      tags: [leads]
+      summary: Update a lead
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadUpdate"
+      responses:
+        "200":
+          description: Updated lead
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+    delete:
+      operationId: deleteLead
+      tags: [leads]
+      summary: Delete a lead
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /runs:
+    get:
+      operationId: listRuns
+      tags: [runs]
+      summary: List pipeline runs
+      responses:
+        "200":
+          description: List of runs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PipelineRun"
+    post:
+      operationId: createRun
+      tags: [runs]
+      summary: Kick off a new pipeline run
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RunInput"
+      responses:
+        "201":
+          description: Created run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineRun"
+
+  /runs/{id}:
+    get:
+      operationId: getRun
+      tags: [runs]
+      summary: Get a pipeline run by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Pipeline run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineRun"
+    patch:
+      operationId: updateRun
+      tags: [runs]
+      summary: Update run status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RunUpdate"
+      responses:
+        "200":
+          description: Updated run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineRun"
+
+  /pipeline/summary:
+    get:
+      operationId: getPipelineSummary
+      tags: [pipeline]
+      summary: Get pipeline summary stats
+      responses:
+        "200":
+          description: Pipeline summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineSummary"
+
+  /pipeline/activity:
+    get:
+      operationId: getPipelineActivity
+      tags: [pipeline]
+      summary: Get recent pipeline activity
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
+  /pipeline/verticals:
+    get:
+      operationId: getVerticalBreakdown
+      tags: [pipeline]
+      summary: Get lead counts by vertical
+      responses:
+        "200":
+          description: Vertical breakdown
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VerticalCount"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    Lead:
+      type: object
+      required: [id, businessName, domain, vertical, geo, status, opportunityTag, createdAt]
+      properties:
+        id:
+          type: integer
+        businessName:
+          type: string
+        domain:
+          type: ["string", "null"]
+        vertical:
+          type: string
+        geo:
+          type: string
+        contactName:
+          type: ["string", "null"]
+        contactEmail:
+          type: ["string", "null"]
+        contactPhone:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [prospected, strategized, built, audited, packaged, outreached, won, lost, recycled]
+        opportunityTag:
+          type: string
+          enum: [no_website, weak_website, outdated, not_ai_citable]
+        siteUrl:
+          type: ["string", "null"]
+        priceOffered:
+          type: ["integer", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: ["string", "null"]
+
+    LeadInput:
+      type: object
+      required: [businessName, vertical, geo, opportunityTag]
+      properties:
+        businessName:
+          type: string
+        domain:
+          type: string
+        vertical:
+          type: string
+        geo:
+          type: string
+        contactName:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
+        opportunityTag:
+          type: string
+          enum: [no_website, weak_website, outdated, not_ai_citable]
+        notes:
+          type: string
+
+    LeadUpdate:
+      type: object
+      properties:
+        businessName:
+          type: string
+        domain:
+          type: string
+        vertical:
+          type: string
+        geo:
+          type: string
+        contactName:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
+        status:
+          type: string
+          enum: [prospected, strategized, built, audited, packaged, outreached, won, lost, recycled]
+        opportunityTag:
+          type: string
+          enum: [no_website, weak_website, outdated, not_ai_citable]
+        siteUrl:
+          type: string
+        priceOffered:
+          type: integer
+        notes:
+          type: string
+
+    PipelineRun:
+      type: object
+      required: [id, leadId, status, currentAgent, createdAt]
+      properties:
+        id:
+          type: integer
+        leadId:
+          type: integer
+        businessName:
+          type: string
+        status:
+          type: string
+          enum: [running, completed, failed, paused, awaiting_approval]
+        currentAgent:
+          type: string
+          enum: [prospector, strategist, builder, auditor, packager, persona_tester, conductor]
+        agentLogs:
+          type: ["string", "null"]
+        siteUrl:
+          type: ["string", "null"]
+        emailDraft:
+          type: ["string", "null"]
+        auditScore:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+        completedAt:
+          type: ["string", "null"]
+
+    RunInput:
+      type: object
+      required: [leadId]
+      properties:
+        leadId:
+          type: integer
+
+    RunUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [running, completed, failed, paused, awaiting_approval]
+        currentAgent:
+          type: string
+          enum: [prospector, strategist, builder, auditor, packager, persona_tester, conductor]
+        agentLogs:
+          type: string
+        siteUrl:
+          type: string
+        emailDraft:
+          type: string
+        auditScore:
+          type: integer
+
+    PipelineSummary:
+      type: object
+      required: [totalLeads, activeRuns, wonDeals, totalRevenue, wonThisMonth, conversionRate]
+      properties:
+        totalLeads:
+          type: integer
+        activeRuns:
+          type: integer
+        wonDeals:
+          type: integer
+        totalRevenue:
+          type: integer
+        wonThisMonth:
+          type: integer
+        conversionRate:
+          type: number
+
+    ActivityItem:
+      type: object
+      required: [id, type, businessName, description, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        businessName:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+
+    VerticalCount:
+      type: object
+      required: [vertical, count]
+      properties:
+        vertical:
+          type: string
+        count:
+          type: integer

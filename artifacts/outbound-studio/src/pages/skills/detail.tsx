@@ -10,10 +10,18 @@ interface SkillMeta {
   tags: string[];
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function renderMarkdown(md: string): string {
-  return md
+  return escapeHtml(md)
     .replace(/^# (.+)$/gm, '<h1 class="text-3xl font-light tracking-tight text-[#f0eeeb] mb-6 mt-8">$1</h1>')
-    .replace(/^## (.+)$/gm, '<h2 class="text-xl font-mono text-[#ea580c] uppercase tracking-wider mb-4 mt-10">$2</h2>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-xl font-mono text-[#ea580c] uppercase tracking-wider mb-4 mt-10">$1</h2>')
     .replace(/^### (.+)$/gm, '<h3 class="text-base font-mono text-[#f0eeeb] uppercase tracking-wide mb-3 mt-8">$1</h3>')
     .replace(/^#### (.+)$/gm, '<h4 class="font-mono text-[#aaa] uppercase tracking-wider text-sm mb-2 mt-6">$1</h4>')
     .replace(/\*\*(.+?)\*\*/g, '<strong class="text-[#f0eeeb] font-semibold">$1</strong>')

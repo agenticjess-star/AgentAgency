@@ -4,13 +4,18 @@ import {
   useGetPipelineSummary,
   useGetPipelineActivity,
   useGetVerticalBreakdown,
+  useListRuns,
 } from "@workspace/api-client-react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
 } from "recharts";
-import { Activity, Target, Trophy, DollarSign, TrendingUp } from "lucide-react";
+import { Activity, Target, Trophy, DollarSign, TrendingUp, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { StatusPill } from "@/components/ui/status-pill";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
 
+/* ── Stat band item ─────────────────────────────────────────────────── */
 function StatItem({ label, value, icon: Icon, isLoading, accent }: {
   label: string; value: string | number; icon: any; isLoading: boolean; accent?: boolean;
 }) {
@@ -23,7 +28,9 @@ function StatItem({ label, value, icon: Icon, isLoading, accent }: {
       {isLoading ? (
         <Skeleton className="h-7 w-20 mt-1" />
       ) : (
-        <div className={`text-2xl font-mono tabular-nums ${accent ? "text-accent" : "text-foreground"}`}>{value}</div>
+        <div className={`text-2xl font-mono tabular-nums ${accent ? "text-accent" : "text-foreground"}`}>
+          {value}
+        </div>
       )}
     </div>
   );
@@ -48,25 +55,18 @@ function ConvRate({ total, won, isLoading }: { total: number; won: number; isLoa
   );
 }
 
+/* ── Dashboard ─────────────────────────────────────────────────────── */
 const DashboardPage: FC = () => {
   const { data: summary, isLoading: summaryLoading } = useGetPipelineSummary();
   const { data: activity, isLoading: activityLoading } = useGetPipelineActivity();
   const { data: verticals, isLoading: verticalsLoading } = useGetVerticalBreakdown();
+  const { data: runs, isLoading: runsLoading } = useListRuns();
+
+  const recentRuns = runs?.slice(0, 5) ?? [];
 
   return (
     <DashboardLayout>
       <div className="space-y-5">
-
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="heading-lg">Console</h1>
-            <p className="caption mt-0.5">Pipeline overview · real-time</p>
-          </div>
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 border border-border bg-card">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-wider text-secondary-foreground">System Active</span>
-          </div>
-        </div>
 
         {/* Stats band */}
         <div className="status-band overflow-x-auto">
@@ -84,7 +84,7 @@ const DashboardPage: FC = () => {
           </div>
         </div>
 
-        {/* Charts + feed */}
+        {/* Operational slab: chart + activity */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2 border border-border bg-card">
             <div className="px-5 py-3.5 border-b border-border flex items-center justify-between">
@@ -146,6 +146,79 @@ const DashboardPage: FC = () => {
                 ))
               )}
             </div>
+          </div>
+        </div>
+
+        {/* Pipeline Queue table */}
+        <div className="border border-border bg-card">
+          <div className="px-5 py-3.5 border-b border-border flex items-center justify-between">
+            <span className="mono-label">Pipeline Queue</span>
+            <Link href="/runs">
+              <Button variant="ghost" size="sm" className="font-mono text-[10px] uppercase tracking-wider h-6 px-2 gap-1 text-secondary-foreground hover:text-foreground">
+                All Runs <ChevronRight className="w-3 h-3" />
+              </Button>
+            </Link>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left op-table">
+              <thead>
+                <tr>
+                  <th>Target</th>
+                  <th className="hidden sm:table-cell">Stage</th>
+                  <th>Status</th>
+                  <th className="hidden md:table-cell">Audit</th>
+                  <th className="text-right">Log</th>
+                </tr>
+              </thead>
+              <tbody>
+                {runsLoading ? (
+                  Array(3).fill(0).map((_, i) => (
+                    <tr key={i}>
+                      <td><Skeleton className="h-4 w-32" /></td>
+                      <td className="hidden sm:table-cell"><Skeleton className="h-4 w-24" /></td>
+                      <td><Skeleton className="h-5 w-20" /></td>
+                      <td className="hidden md:table-cell"><Skeleton className="h-4 w-10" /></td>
+                      <td />
+                    </tr>
+                  ))
+                ) : recentRuns.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center font-mono text-xs text-secondary-foreground">
+                      No pipeline runs yet.
+                    </td>
+                  </tr>
+                ) : (
+                  recentRuns.map((run) => (
+                    <tr key={run.id}>
+                      <td>
+                        <div className="font-medium text-[13px]">{run.businessName || `Lead #${run.leadId}`}</div>
+                        <div className="font-mono text-[10px] text-secondary-foreground mt-0.5">
+                          {new Date(run.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                        </div>
+                      </td>
+                      <td className="hidden sm:table-cell font-mono text-[11px] text-secondary-foreground capitalize">
+                        {run.currentAgent.replace(/_/g, " ")}
+                      </td>
+                      <td><StatusPill status={run.status} /></td>
+                      <td className="hidden md:table-cell font-mono text-[12px]">
+                        {run.auditScore != null ? (
+                          <span className={run.auditScore >= 80 ? "text-emerald-600" : run.auditScore >= 60 ? "text-amber-600" : "text-red-600"}>
+                            {run.auditScore}<span className="text-secondary-foreground text-[10px]">/100</span>
+                          </span>
+                        ) : <span className="text-secondary-foreground">—</span>}
+                      </td>
+                      <td className="text-right">
+                        <Link href={`/runs/${run.id}`}>
+                          <Button variant="ghost" size="sm" className="font-mono text-[10px] uppercase h-7 px-2 gap-1 text-secondary-foreground hover:text-foreground">
+                            Open <ChevronRight className="w-3 h-3" />
+                          </Button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

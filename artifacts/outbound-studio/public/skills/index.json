@@ -1,5 +1,12 @@
 [
   {
+    "slug": "outbound-studio",
+    "name": "Outbound Studio",
+    "description": "The full 7-agent outbound system: how the pipeline works end-to-end, from prospecting to claim offer delivery.",
+    "agent": "Platform",
+    "tags": ["platform", "pipeline", "overview", "system"]
+  },
+  {
     "slug": "prospector",
     "name": "Prospector",
     "description": "Discovers SMBs with weak or missing web presence across target verticals and geos using multi-source search aggregation.",
@@ -7,67 +14,11 @@
     "tags": ["discovery", "scraping", "geo", "vertical"]
   },
   {
-    "slug": "strategist",
-    "name": "Strategist",
-    "description": "Audits the target business's existing web presence and constructs the competitive pitch strategy and site blueprint.",
-    "agent": "02 · Strategist",
-    "tags": ["audit", "seo", "aeo", "pitch"]
-  },
-  {
-    "slug": "builder",
-    "name": "Builder",
-    "description": "Generates a superior, AEO-optimized version of the target's site on spec — no charge to the prospect until they claim it.",
-    "agent": "03 · Builder",
-    "tags": ["codegen", "aeo", "html", "schema"]
-  },
-  {
-    "slug": "auditor",
-    "name": "Auditor",
-    "description": "Scores the built site against 40+ AEO and technical quality criteria. Loops back to Builder if the score falls below threshold.",
-    "agent": "04 · Auditor",
-    "tags": ["qa", "scoring", "aeo", "loop"]
-  },
-  {
-    "slug": "packager",
-    "name": "Packager",
-    "description": "Bundles the built site, audit report, and offer materials into a structured claim package ready for outreach.",
-    "agent": "05 · Packager",
-    "tags": ["bundling", "assets", "offer"]
-  },
-  {
-    "slug": "persona-tester",
-    "name": "Persona Tester",
-    "description": "Simulates 3 ICP personas against the claim offer to validate conversion likelihood. Loops to Packager if rate is insufficient.",
-    "agent": "06 · Persona Tester",
-    "tags": ["icp", "simulation", "conversion", "loop"]
-  },
-  {
-    "slug": "outreach",
-    "name": "Outreach",
-    "description": "Composes and dispatches a personalized 7-day claim email sequence to the business owner with a time-limited offer.",
-    "agent": "07 · Outreach",
-    "tags": ["email", "sequence", "personalization", "crm"]
-  },
-  {
-    "slug": "seo-auditor",
-    "name": "SEO Auditor",
-    "description": "230+ rule technical SEO audit covering meta tags, crawl errors, Core Web Vitals, structured data, and indexing health.",
-    "agent": "02 · Strategist",
-    "tags": ["seo", "audit", "technical", "core-web-vitals"]
-  },
-  {
-    "slug": "aeo-optimizer",
-    "name": "AEO Optimizer",
-    "description": "Optimizes content and markup for Answer Engine citation — targets ChatGPT, Perplexity, Gemini, and AI Overview.",
-    "agent": "03 · Builder",
-    "tags": ["aeo", "schema", "llm", "citation"]
-  },
-  {
-    "slug": "competitive-analysis",
-    "name": "Competitive Analysis",
-    "description": "Maps the competitive landscape for a target vertical/geo, identifying positioning gaps and citation opportunities.",
-    "agent": "02 · Strategist",
-    "tags": ["competitive", "positioning", "market"]
+    "slug": "geo",
+    "name": "Geo Targeting",
+    "description": "Hyper-local market targeting by city, metro, and radius. Powers geographic segmentation across all prospecting runs.",
+    "agent": "01 · Prospector",
+    "tags": ["geo", "local", "segmentation", "radius"]
   },
   {
     "slug": "deep-research",
@@ -77,10 +28,73 @@
     "tags": ["research", "intel", "contact", "enrichment"]
   },
   {
+    "slug": "strategist",
+    "name": "Strategist",
+    "description": "Audits the target business's existing web presence and constructs the competitive pitch strategy and site blueprint.",
+    "agent": "02 · Strategist",
+    "tags": ["audit", "seo", "aeo", "pitch"]
+  },
+  {
+    "slug": "seo-auditor",
+    "name": "SEO Auditor",
+    "description": "230+ rule technical SEO audit covering meta tags, crawl errors, Core Web Vitals, structured data, and indexing health.",
+    "agent": "02 · Strategist",
+    "tags": ["seo", "audit", "technical", "core-web-vitals"]
+  },
+  {
+    "slug": "competitive-analysis",
+    "name": "Competitive Analysis",
+    "description": "Maps the competitive landscape for a target vertical/geo, identifying positioning gaps and citation opportunities.",
+    "agent": "02 · Strategist",
+    "tags": ["competitive", "positioning", "market"]
+  },
+  {
+    "slug": "programmatic-seo",
+    "name": "Programmatic SEO",
+    "description": "Generates location and service page templates at scale. Used by the Builder agent to stamp out AEO-optimized page variants.",
+    "agent": "03 · Builder",
+    "tags": ["seo", "templates", "scale", "aeo"]
+  },
+  {
+    "slug": "website-cloner",
+    "name": "Website Cloner",
+    "description": "Captures the target's existing site structure, assets, and content as a baseline for the spec rebuild.",
+    "agent": "03 · Builder",
+    "tags": ["scraping", "baseline", "clone", "html"]
+  },
+  {
+    "slug": "recreate-screenshot",
+    "name": "Recreate Screenshot",
+    "description": "Converts competitor or reference screenshots into clean, production-ready HTML/CSS layouts for rapid spec builds.",
+    "agent": "03 · Builder",
+    "tags": ["codegen", "screenshot", "html", "css"]
+  },
+  {
+    "slug": "auditor",
+    "name": "Auditor",
+    "description": "Scores the built site against 40+ AEO and technical quality criteria. Loops back to Builder if the score falls below threshold.",
+    "agent": "04 · Auditor",
+    "tags": ["qa", "scoring", "aeo", "loop"]
+  },
+  {
     "slug": "ai-sdr",
     "name": "AI SDR",
     "description": "Full AI sales development representative — end-to-end outbound prospecting, qualification, and sequence management.",
     "agent": "07 · Outreach",
     "tags": ["sdr", "outbound", "sales", "automation"]
+  },
+  {
+    "slug": "invoice-generator",
+    "name": "Invoice Generator",
+    "description": "Generates the claim offer package: pricing sheet, service scope, and 7-day urgency terms tailored to each target.",
+    "agent": "07 · Outreach",
+    "tags": ["invoice", "offer", "pricing", "urgency"]
+  },
+  {
+    "slug": "skill-creator",
+    "name": "Skill Creator",
+    "description": "Meta-skill for building, testing, and publishing new agent skills into the Outbound Studio skill registry.",
+    "agent": "Platform",
+    "tags": ["meta", "skills", "registry", "platform"]
   }
 ]

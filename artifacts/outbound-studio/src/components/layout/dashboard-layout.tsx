@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Zap,
+  Circle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,19 @@ const NAV_ITEMS = [
   { href: "/runs", label: "Runs", icon: Activity },
 ];
 
+const PAGE_TITLES: Record<string, string> = {
+  "/dashboard": "Console",
+  "/leads": "Leads",
+  "/runs": "Pipeline Runs",
+};
+
+function getPageTitle(location: string): string {
+  for (const [prefix, title] of Object.entries(PAGE_TITLES)) {
+    if (location.startsWith(prefix)) return title;
+  }
+  return "Outbound Studio";
+}
+
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   const [location] = useLocation();
   const { user } = useUser();
@@ -29,6 +43,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   const { data: summary } = useGetPipelineSummary();
 
   const activeRuns = summary?.activeRuns ?? 0;
+  const pageTitle = getPageTitle(location);
 
   return (
     <div className="flex h-dvh bg-background overflow-hidden">
@@ -50,7 +65,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
           )}
         </div>
 
-        {/* Status indicator */}
+        {/* Active run indicator strip */}
         {!collapsed && activeRuns > 0 && (
           <div className="mx-3 mt-3 px-3 py-2 bg-accent/8 border border-accent/20 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
@@ -76,7 +91,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                   )}
                   title={collapsed ? label : undefined}
                 >
-                  <Icon className={cn("shrink-0", collapsed ? "w-4 h-4" : "w-4 h-4")} />
+                  <Icon className="w-4 h-4 shrink-0" />
                   {!collapsed && (
                     <span className="font-mono text-[11px] uppercase tracking-wider">{label}</span>
                   )}
@@ -85,25 +100,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
             );
           })}
         </nav>
-
-        {/* Footer */}
-        <div className={cn("p-3 border-t border-border", collapsed ? "flex justify-center" : "")}>
-          {collapsed ? (
-            <UserButton />
-          ) : (
-            <div className="flex items-center gap-2.5">
-              <UserButton />
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-medium text-foreground truncate">
-                  {user?.firstName || "Operator"}
-                </span>
-                <span className="font-mono text-[10px] text-secondary-foreground truncate">
-                  {user?.id?.slice(-8) ?? "—"}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
 
         {/* Collapse toggle */}
         <button
@@ -121,17 +117,40 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
 
       {/* ── Main area ───────────────────────────────────────────────── */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-        {/* Top bar (mobile logo + status) */}
-        <header className="h-12 border-b border-border bg-card flex items-center px-4 gap-3 shrink-0 md:hidden">
-          <span className="font-mono text-sm font-semibold tracking-tighter uppercase text-foreground flex-1">
+
+        {/* ── Global top status bar (all dashboard pages, all widths) ── */}
+        <header className="h-12 border-b border-border bg-card flex items-center px-4 md:px-6 gap-3 shrink-0">
+          {/* Mobile logo */}
+          <span className="font-mono text-sm font-semibold tracking-tighter uppercase text-foreground md:hidden flex-1">
             Outbound<span className="text-accent">Studio</span>
           </span>
-          {activeRuns > 0 && (
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-accent/10 border border-accent/20">
-              <Zap className="w-3 h-3 text-accent" />
-              <span className="font-mono text-[10px] text-accent uppercase">{activeRuns} active</span>
-            </div>
-          )}
+
+          {/* Desktop: page title */}
+          <span className="hidden md:block font-mono text-[11px] uppercase tracking-wider text-foreground flex-1">
+            {pageTitle}
+          </span>
+
+          {/* System state */}
+          <div className="flex items-center gap-2 shrink-0">
+            {activeRuns > 0 ? (
+              <>
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                <span className="font-mono text-[10px] text-accent uppercase tracking-wider hidden sm:block">
+                  {activeRuns} active
+                </span>
+                <Zap className="w-3.5 h-3.5 text-accent sm:hidden" />
+              </>
+            ) : (
+              <>
+                <Circle className="w-2 h-2 text-emerald-500 fill-emerald-500" />
+                <span className="font-mono text-[10px] text-secondary-foreground uppercase tracking-wider hidden md:block">
+                  Idle
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* User avatar — always visible in top bar */}
           <UserButton />
         </header>
 

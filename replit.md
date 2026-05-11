@@ -45,7 +45,7 @@ An AI-native outbound sales system — a 7-agent crew that finds SMBs with weak 
 ## Product
 
 - **Public landing page**: Dark full-bleed page. Animated typewriter terminal demo, 7-agent pipeline diagram with feedback loop arrows, AEO thesis with stats, 3-tier pricing. No internal agent mechanics exposed.
-- **Skills directory** (`/skills`, `/skills/:slug`): Public reference docs for all 12 agent skill modules. Grouped by agent, markdown-rendered detail pages fetched from `public/skills/`.
+- **Skills directory** (`/skills`, `/skills/:slug`): Public reference docs for all 19 skill modules. Searchable, grouped by agent, markdown-rendered detail pages fetched from `public/skills/`.
 - **Dashboard**: Status band with 5 live KPIs, vertical breakdown bar chart, real-time activity feed. Collapsible sidebar, mobile bottom tab bar.
 - **Leads console**: Searchable operator table with sticky header, status pills, "Inject Lead" modal, full detail view with pipeline run history and "Execute Sequence" trigger.
 - **Runs console**: Audit score column with color-coded thresholds, agent progress tracker, dark terminal for telemetry logs, generated email draft viewer.

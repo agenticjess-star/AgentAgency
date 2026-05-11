@@ -128,8 +128,23 @@ function PipelineDiagram() {
                 <motion.div
                   initial={{ scaleX: 0 }} animate={inView ? { scaleX: 1 } : {}}
                   transition={{ duration: 0.25, delay: i * 0.1 + 0.2 }}
-                  className="h-px bg-[#282828] flex-1 mx-1.5 origin-left"
-                />
+                  className="h-px bg-[#282828] flex-1 mx-1.5 origin-left relative overflow-hidden"
+                >
+                  {inView && (
+                    <motion.div
+                      className="absolute inset-y-0 w-6"
+                      style={{ background: "linear-gradient(90deg, transparent, rgba(234,88,12,0.8), transparent)" }}
+                      animate={{ x: ["-24px", "200%"] }}
+                      transition={{
+                        duration: 1.2,
+                        delay: i * 0.1 + 0.8,
+                        repeat: Infinity,
+                        repeatDelay: 2.5,
+                        ease: "linear",
+                      }}
+                    />
+                  )}
+                </motion.div>
               )}
             </div>
           ))}

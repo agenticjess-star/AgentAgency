@@ -9,15 +9,16 @@ import {
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
 } from "recharts";
-import { Activity, Target, Trophy, DollarSign, TrendingUp, ChevronRight } from "lucide-react";
+import { Activity, Target, Trophy, DollarSign, TrendingUp, ChevronRight, LucideIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusPill } from "@/components/ui/status-pill";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
 
 /* ── Stat band item ─────────────────────────────────────────────────── */
 function StatItem({ label, value, icon: Icon, isLoading, accent }: {
-  label: string; value: string | number; icon: any; isLoading: boolean; accent?: boolean;
+  label: string; value: string | number; icon: LucideIcon; isLoading: boolean; accent?: boolean;
 }) {
   return (
     <div className="status-band-item min-w-0">
@@ -132,37 +133,46 @@ const DashboardPage: FC = () => {
                   {Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-14 w-full" />)}
                 </div>
               ) : (
-                activity?.map((log) => {
-                  const typeColor: Record<string, string> = {
-                    lead_created: "#ea580c",
-                    run_started: "#3b82f6",
-                    run_completed: "#4ade80",
-                    run_failed: "#ef4444",
-                    email_sent: "#a855f7",
-                    deal_won: "#4ade80",
-                  };
-                  const rail = typeColor[log.type] ?? "#555";
-                  return (
-                    <div key={log.id} className="flex items-stretch">
-                      <div className="w-0.5 shrink-0" style={{ backgroundColor: rail, opacity: 0.7 }} />
-                      <div className="flex-1 px-4 py-3">
-                        <div className="flex items-center justify-between mb-1">
-                          <span
-                            className="font-mono text-[10px] uppercase tracking-wider truncate mr-2"
-                            style={{ color: rail }}
-                          >
-                            {log.type.replace(/_/g, " ")}
-                          </span>
-                          <span className="font-mono text-[10px] text-secondary-foreground whitespace-nowrap">
-                            {new Date(log.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                          </span>
+                <AnimatePresence initial={false}>
+                  {activity?.map((log) => {
+                    const typeColor: Record<string, string> = {
+                      lead_created: "#ea580c",
+                      run_started: "#3b82f6",
+                      run_completed: "#4ade80",
+                      run_failed: "#ef4444",
+                      email_sent: "#a855f7",
+                      deal_won: "#4ade80",
+                    };
+                    const rail = typeColor[log.type] ?? "#555";
+                    return (
+                      <motion.div
+                        key={log.id}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="flex items-stretch"
+                      >
+                        <div className="w-0.5 shrink-0" style={{ backgroundColor: rail, opacity: 0.7 }} />
+                        <div className="flex-1 px-4 py-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <span
+                              className="font-mono text-[10px] uppercase tracking-wider truncate mr-2"
+                              style={{ color: rail }}
+                            >
+                              {log.type.replace(/_/g, " ")}
+                            </span>
+                            <span className="font-mono text-[10px] text-secondary-foreground whitespace-nowrap">
+                              {new Date(log.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                            </span>
+                          </div>
+                          <div className="text-[13px] font-medium text-foreground truncate">{log.businessName}</div>
+                          <div className="text-[11px] text-secondary-foreground mt-0.5 leading-snug line-clamp-2">{log.description}</div>
                         </div>
-                        <div className="text-[13px] font-medium text-foreground truncate">{log.businessName}</div>
-                        <div className="text-[11px] text-secondary-foreground mt-0.5 leading-snug line-clamp-2">{log.description}</div>
-                      </div>
-                    </div>
-                  );
-                })
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
               )}
             </div>
           </div>

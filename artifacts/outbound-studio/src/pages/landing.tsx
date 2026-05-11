@@ -324,17 +324,59 @@ const LandingPage: FC = () => (
       </div>
     </section>
 
-    {/* Skills teaser */}
-    <section className="py-24 border-t border-[#111]">
+    {/* Capabilities card grid */}
+    <section id="skills" className="py-24 border-t border-[#111]">
       <div className="max-w-7xl mx-auto px-6">
         <Tag s="04 — Capabilities" />
         <h2 className="display-text mb-4">Modular agent skills.</h2>
-        <p className="text-[#555] text-sm font-mono mb-10 max-w-xl">
-          Each agent is powered by a discrete, composable skill module. Browse the public directory to see what each one does.
+        <p className="text-[#555] text-sm font-mono mb-14 max-w-xl leading-relaxed">
+          Each agent is powered by a discrete, composable skill module. All 19 skills are fully documented and publicly available.
         </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#111] border border-[#111] mb-10">
+          {[
+            {
+              label: "Hyper-Local Prospecting",
+              desc: "Find SMBs with weak web presence in any city, metro, or custom radius. Multi-source scoring filters to the highest-opportunity targets.",
+              tag: "discovery",
+            },
+            {
+              label: "Competitive Intelligence",
+              desc: "Map the local competitive landscape — page-one rankings, review scores, site quality — and identify the fastest path to category leadership.",
+              tag: "strategy",
+            },
+            {
+              label: "AEO-Optimized Build",
+              desc: "Generate replacement sites with full LocalBusiness, Service, and FAQPage schema. Structured to win AI Overview and Perplexity citations.",
+              tag: "build",
+            },
+            {
+              label: "Technical SEO Audit",
+              desc: "230+ rule scan covering crawl errors, Core Web Vitals, missing structured data, and indexing gaps. Produces a scored improvement brief.",
+              tag: "audit",
+            },
+            {
+              label: "Programmatic Pages at Scale",
+              desc: "Stamp out location × service page variants from a single template. Each page gets its own JSON-LD, canonical URL, and optimized copy.",
+              tag: "scale",
+            },
+            {
+              label: "Personalized Claim Sequences",
+              desc: "7-day email cadences written from the full context stack — audit score diff, competitor gap, and business-specific data. Zero boilerplate.",
+              tag: "outreach",
+            },
+          ].map((cap) => (
+            <div key={cap.label} className="bg-[#000] p-7 flex flex-col gap-3">
+              <div className="font-mono text-[9px] uppercase tracking-widest text-[#ea580c]">{cap.tag}</div>
+              <div className="font-mono text-[11px] uppercase tracking-wider text-[#f0eeeb]">{cap.label}</div>
+              <p className="text-[#555] text-[12px] leading-relaxed flex-1">{cap.desc}</p>
+            </div>
+          ))}
+        </div>
+
         <Link href="/skills">
           <button className="border border-[#282828] text-[#666] font-mono text-[11px] uppercase tracking-wider px-8 py-4 hover:border-[#ea580c] hover:text-[#ea580c] transition-colors flex items-center gap-2">
-            Browse Skills Directory <ExternalLink className="w-3.5 h-3.5" />
+            Browse Full Skills Directory — 19 modules <ExternalLink className="w-3.5 h-3.5" />
           </button>
         </Link>
       </div>

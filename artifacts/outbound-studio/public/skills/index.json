@@ -7,6 +7,13 @@
     "tags": ["platform", "pipeline", "overview", "system"]
   },
   {
+    "slug": "skill-creator",
+    "name": "Skill Creator",
+    "description": "Meta-skill for building, testing, and publishing new agent skills into the Outbound Studio skill registry.",
+    "agent": "Platform",
+    "tags": ["meta", "skills", "registry", "platform"]
+  },
+  {
     "slug": "prospector",
     "name": "Prospector",
     "description": "Discovers SMBs with weak or missing web presence across target verticals and geos using multi-source search aggregation.",
@@ -49,6 +56,13 @@
     "tags": ["competitive", "positioning", "market"]
   },
   {
+    "slug": "builder",
+    "name": "Builder",
+    "description": "Generates a superior, AEO-optimized version of the target's site on spec — no charge to the prospect until they claim it.",
+    "agent": "03 · Builder",
+    "tags": ["codegen", "aeo", "html", "schema"]
+  },
+  {
     "slug": "programmatic-seo",
     "name": "Programmatic SEO",
     "description": "Generates location and service page templates at scale. Used by the Builder agent to stamp out AEO-optimized page variants.",
@@ -70,11 +84,39 @@
     "tags": ["codegen", "screenshot", "html", "css"]
   },
   {
+    "slug": "aeo-optimizer",
+    "name": "AEO Optimizer",
+    "description": "Optimizes content and markup for Answer Engine citation — targets ChatGPT, Perplexity, Gemini, and AI Overview.",
+    "agent": "03 · Builder",
+    "tags": ["aeo", "schema", "llm", "citation"]
+  },
+  {
     "slug": "auditor",
     "name": "Auditor",
     "description": "Scores the built site against 40+ AEO and technical quality criteria. Loops back to Builder if the score falls below threshold.",
     "agent": "04 · Auditor",
     "tags": ["qa", "scoring", "aeo", "loop"]
+  },
+  {
+    "slug": "packager",
+    "name": "Packager",
+    "description": "Bundles the built site, audit report, and offer materials into a structured claim package ready for outreach.",
+    "agent": "05 · Packager",
+    "tags": ["bundling", "assets", "offer"]
+  },
+  {
+    "slug": "persona-tester",
+    "name": "Persona Tester",
+    "description": "Simulates 3 ICP personas against the claim offer to validate conversion likelihood. Loops to Packager if rate is insufficient.",
+    "agent": "06 · Persona Tester",
+    "tags": ["icp", "simulation", "conversion", "loop"]
+  },
+  {
+    "slug": "outreach",
+    "name": "Outreach",
+    "description": "Composes and dispatches a personalized 7-day claim email sequence to the business owner with a time-limited offer.",
+    "agent": "07 · Outreach",
+    "tags": ["email", "sequence", "personalization", "crm"]
   },
   {
     "slug": "ai-sdr",
@@ -89,12 +131,5 @@
     "description": "Generates the claim offer package: pricing sheet, service scope, and 7-day urgency terms tailored to each target.",
     "agent": "07 · Outreach",
     "tags": ["invoice", "offer", "pricing", "urgency"]
-  },
-  {
-    "slug": "skill-creator",
-    "name": "Skill Creator",
-    "description": "Meta-skill for building, testing, and publishing new agent skills into the Outbound Studio skill registry.",
-    "agent": "Platform",
-    "tags": ["meta", "skills", "registry", "platform"]
   }
 ]

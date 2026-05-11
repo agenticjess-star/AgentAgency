@@ -16,6 +16,8 @@ tags:
     description: Pipeline run management
   - name: pipeline
     description: Pipeline summary and status
+  - name: slack
+    description: Slack workspace messaging
 paths:
   /healthz:
     get:
@@ -245,6 +247,61 @@ paths:
                 items:
                   $ref: "#/components/schemas/VerticalCount"
 
+  /slack/channels:
+    get:
+      operationId: listSlackChannels
+      tags: [slack]
+      summary: List accessible Slack channels
+      responses:
+        "200":
+          description: Channel list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SlackChannel"
+
+  /slack/history/{channelId}:
+    get:
+      operationId: getSlackHistory
+      tags: [slack]
+      summary: Get message history for a channel
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Message list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SlackMessage"
+
+  /slack/send:
+    post:
+      operationId: sendSlackMessage
+      tags: [slack]
+      summary: Send a message to a Slack channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SlackSendInput"
+      responses:
+        "200":
+          description: Sent message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SlackMessage"
+
 components:
   schemas:
     HealthStatus:
@@ -439,3 +496,41 @@ components:
           type: string
         count:
           type: integer
+
+    SlackChannel:
+      type: object
+      required: [id, name, type, isPrivate]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [channel, dm, group]
+        memberCount:
+          type: ["integer", "null"]
+        isPrivate:
+          type: boolean
+
+    SlackMessage:
+      type: object
+      required: [ts, text]
+      properties:
+        ts:
+          type: string
+        text:
+          type: string
+        userId:
+          type: ["string", "null"]
+        userName:
+          type: ["string", "null"]
+
+    SlackSendInput:
+      type: object
+      required: [channelId, text]
+      properties:
+        channelId:
+          type: string
+        text:
+          type: string

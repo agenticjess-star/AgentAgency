@@ -27,15 +27,16 @@ An AI-native outbound sales system — a 7-agent crew that finds SMBs with weak 
 - `lib/api-spec/openapi.yaml` — OpenAPI contract (run codegen after changes)
 - `lib/api-zod/` — generated Zod schemas (from codegen)
 - `lib/api-client-react/` — generated React Query hooks (from codegen)
-- `artifacts/api-server/src/routes/` — Express route handlers (`leads.ts`, `runs.ts`, `pipeline.ts`)
-- `artifacts/outbound-studio/src/pages/` — frontend pages (landing, dashboard, leads, runs, skills)
+- `artifacts/api-server/src/routes/` — Express route handlers (`leads.ts`, `runs.ts`, `pipeline.ts`, `slack.ts`)
+- `artifacts/api-server/src/slack.ts` — Slack service via @replit/connectors-sdk (listChannels, getHistory, sendMessage)
+- `artifacts/outbound-studio/src/pages/` — frontend pages (landing, dashboard, leads, runs, skills, agents)
 - `artifacts/outbound-studio/src/index.css` — design tokens (dual-theme: dark landing + light dashboard)
 - `artifacts/outbound-studio/public/skills/` — public skills directory (index.json + per-agent .md files)
 - `.agents/skills/outbound-studio/SKILL.md` — full 7-agent system knowledge base
 
 ## Architecture decisions
 
-- **Public/private split**: Landing page + `/skills` directory are fully public. Dashboard/leads/runs require Clerk auth.
+- **Public/private split**: Landing page + `/skills` directory are fully public. Dashboard/leads/runs/agents require Clerk auth.
 - **Dual theme**: Landing page uses `data-theme="dark"` (black bg, #EA580C accent) — applied per-page, not globally. Dashboard uses warm light theme (`#f0eeeb` bg, `#fafaf8` cards).
 - **Contract-first API**: OpenAPI spec drives all server validation (Zod) and client data fetching (React Query hooks). Never hand-write fetch calls.
 - **Design system**: JetBrains Mono for all mono labels, Inter for body. Zero shadows, zero border-radius (2px max). Uppercase mono labels everywhere.
@@ -49,6 +50,7 @@ An AI-native outbound sales system — a 7-agent crew that finds SMBs with weak 
 - **Dashboard**: Status band with 5 live KPIs, vertical breakdown bar chart, real-time activity feed. Collapsible sidebar, mobile bottom tab bar.
 - **Leads console**: Searchable operator table with sticky header, status pills, "Inject Lead" right-side sheet, full detail view with pipeline run history and "Execute Sequence" trigger.
 - **Runs console**: Audit score column with color-coded thresholds, agent progress tracker, dark terminal for telemetry logs, generated email draft viewer.
+- **Agents console** (`/agents`): Two-panel Slack messenger. Left: live channel list (public + DMs) from connected workspace. Right: dark terminal message stream with 8s auto-poll + manual refresh. Send messages to any channel directly from the app — reach any agent on any platform that has a Slack connection.
 
 ## User preferences
 

@@ -10,6 +10,7 @@ import {
   ChevronRight,
   Zap,
   Circle,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,12 +22,14 @@ const NAV_ITEMS = [
   { href: "/dashboard", label: "Console", icon: LayoutDashboard },
   { href: "/leads", label: "Leads", icon: Users },
   { href: "/runs", label: "Runs", icon: Activity },
+  { href: "/agents", label: "Agents", icon: MessageSquare },
 ];
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Console",
   "/leads": "Leads",
   "/runs": "Pipeline Runs",
+  "/agents": "Agents",
 };
 
 function getPageTitle(location: string): string {

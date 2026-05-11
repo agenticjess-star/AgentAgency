@@ -27,6 +27,9 @@ import type {
   PipelineSummary,
   RunInput,
   RunUpdate,
+  SlackChannel,
+  SlackMessage,
+  SlackSendInput,
   VerticalCount,
 } from "./api.schemas";
 
@@ -1081,3 +1084,252 @@ export function useGetVerticalBreakdown<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary List accessible Slack channels
+ */
+export const getListSlackChannelsUrl = () => {
+  return `/api/slack/channels`;
+};
+
+export const listSlackChannels = async (
+  options?: RequestInit,
+): Promise<SlackChannel[]> => {
+  return customFetch<SlackChannel[]>(getListSlackChannelsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListSlackChannelsQueryKey = () => {
+  return [`/api/slack/channels`] as const;
+};
+
+export const getListSlackChannelsQueryOptions = <
+  TData = Awaited<ReturnType<typeof listSlackChannels>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listSlackChannels>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListSlackChannelsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof listSlackChannels>>
+  > = ({ signal }) => listSlackChannels({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listSlackChannels>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListSlackChannelsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listSlackChannels>>
+>;
+export type ListSlackChannelsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List accessible Slack channels
+ */
+
+export function useListSlackChannels<
+  TData = Awaited<ReturnType<typeof listSlackChannels>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listSlackChannels>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListSlackChannelsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get message history for a channel
+ */
+export const getGetSlackHistoryUrl = (channelId: string) => {
+  return `/api/slack/history/${channelId}`;
+};
+
+export const getSlackHistory = async (
+  channelId: string,
+  options?: RequestInit,
+): Promise<SlackMessage[]> => {
+  return customFetch<SlackMessage[]>(getGetSlackHistoryUrl(channelId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetSlackHistoryQueryKey = (channelId: string) => {
+  return [`/api/slack/history/${channelId}`] as const;
+};
+
+export const getGetSlackHistoryQueryOptions = <
+  TData = Awaited<ReturnType<typeof getSlackHistory>>,
+  TError = ErrorType<unknown>,
+>(
+  channelId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getSlackHistory>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetSlackHistoryQueryKey(channelId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getSlackHistory>>> = ({
+    signal,
+  }) => getSlackHistory(channelId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!channelId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getSlackHistory>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetSlackHistoryQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getSlackHistory>>
+>;
+export type GetSlackHistoryQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get message history for a channel
+ */
+
+export function useGetSlackHistory<
+  TData = Awaited<ReturnType<typeof getSlackHistory>>,
+  TError = ErrorType<unknown>,
+>(
+  channelId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getSlackHistory>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetSlackHistoryQueryOptions(channelId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Send a message to a Slack channel
+ */
+export const getSendSlackMessageUrl = () => {
+  return `/api/slack/send`;
+};
+
+export const sendSlackMessage = async (
+  slackSendInput: SlackSendInput,
+  options?: RequestInit,
+): Promise<SlackMessage> => {
+  return customFetch<SlackMessage>(getSendSlackMessageUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(slackSendInput),
+  });
+};
+
+export const getSendSlackMessageMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sendSlackMessage>>,
+    TError,
+    { data: BodyType<SlackSendInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof sendSlackMessage>>,
+  TError,
+  { data: BodyType<SlackSendInput> },
+  TContext
+> => {
+  const mutationKey = ["sendSlackMessage"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof sendSlackMessage>>,
+    { data: BodyType<SlackSendInput> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return sendSlackMessage(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type SendSlackMessageMutationResult = NonNullable<
+  Awaited<ReturnType<typeof sendSlackMessage>>
+>;
+export type SendSlackMessageMutationBody = BodyType<SlackSendInput>;
+export type SendSlackMessageMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Send a message to a Slack channel
+ */
+export const useSendSlackMessage = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sendSlackMessage>>,
+    TError,
+    { data: BodyType<SlackSendInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof sendSlackMessage>>,
+  TError,
+  { data: BodyType<SlackSendInput> },
+  TContext
+> => {
+  return useMutation(getSendSlackMessageMutationOptions(options));
+};

@@ -25,4 +25,8 @@ export * from "./runInput";
 export * from "./runUpdate";
 export * from "./runUpdateCurrentAgent";
 export * from "./runUpdateStatus";
+export * from "./slackChannel";
+export * from "./slackChannelType";
+export * from "./slackMessage";
+export * from "./slackSendInput";
 export * from "./verticalCount";

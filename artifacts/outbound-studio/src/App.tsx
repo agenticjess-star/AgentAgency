@@ -11,6 +11,7 @@ import RunsPage from "@/pages/runs/index";
 import RunDetailPage from "@/pages/runs/detail";
 import SkillsPage from "@/pages/skills/index";
 import SkillDetailPage from "@/pages/skills/detail";
+import AgentsPage from "@/pages/agents/index";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -133,6 +134,7 @@ function ClerkProviderWithRoutes() {
           <Route path="/leads/:id"><ProtectedRoute component={LeadDetailPage} /></Route>
           <Route path="/runs"><ProtectedRoute component={RunsPage} /></Route>
           <Route path="/runs/:id"><ProtectedRoute component={RunDetailPage} /></Route>
+          <Route path="/agents"><ProtectedRoute component={AgentsPage} /></Route>
 
           <Route component={NotFound} />
         </Switch>

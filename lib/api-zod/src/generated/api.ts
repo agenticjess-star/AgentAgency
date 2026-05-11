@@ -358,3 +358,47 @@ export const GetVerticalBreakdownResponseItem = zod.object({
 export const GetVerticalBreakdownResponse = zod.array(
   GetVerticalBreakdownResponseItem,
 );
+
+/**
+ * @summary List accessible Slack channels
+ */
+export const ListSlackChannelsResponseItem = zod.object({
+  id: zod.string(),
+  name: zod.string(),
+  type: zod.enum(["channel", "dm", "group"]),
+  memberCount: zod.number().nullish(),
+  isPrivate: zod.boolean(),
+});
+export const ListSlackChannelsResponse = zod.array(
+  ListSlackChannelsResponseItem,
+);
+
+/**
+ * @summary Get message history for a channel
+ */
+export const GetSlackHistoryParams = zod.object({
+  channelId: zod.coerce.string(),
+});
+
+export const GetSlackHistoryResponseItem = zod.object({
+  ts: zod.string(),
+  text: zod.string(),
+  userId: zod.string().nullish(),
+  userName: zod.string().nullish(),
+});
+export const GetSlackHistoryResponse = zod.array(GetSlackHistoryResponseItem);
+
+/**
+ * @summary Send a message to a Slack channel
+ */
+export const SendSlackMessageBody = zod.object({
+  channelId: zod.string(),
+  text: zod.string(),
+});
+
+export const SendSlackMessageResponse = zod.object({
+  ts: zod.string(),
+  text: zod.string(),
+  userId: zod.string().nullish(),
+  userName: zod.string().nullish(),
+});

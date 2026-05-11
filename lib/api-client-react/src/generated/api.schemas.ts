@@ -223,6 +223,38 @@ export interface VerticalCount {
   count: number;
 }
 
+export type SlackChannelType =
+  (typeof SlackChannelType)[keyof typeof SlackChannelType];
+
+export const SlackChannelType = {
+  channel: "channel",
+  dm: "dm",
+  group: "group",
+} as const;
+
+export interface SlackChannel {
+  id: string;
+  name: string;
+  type: SlackChannelType;
+  /** @nullable */
+  memberCount?: number | null;
+  isPrivate: boolean;
+}
+
+export interface SlackMessage {
+  ts: string;
+  text: string;
+  /** @nullable */
+  userId?: string | null;
+  /** @nullable */
+  userName?: string | null;
+}
+
+export interface SlackSendInput {
+  channelId: string;
+  text: string;
+}
+
 export type ListLeadsParams = {
   status?: string;
   vertical?: string;

@@ -20,6 +20,11 @@ router.get("/history/:channelId", async (req, res) => {
     res.json(messages);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Slack error";
+    // not_in_channel = bot hasn't been invited; return empty gracefully
+    if (msg === "not_in_channel") {
+      res.json([]);
+      return;
+    }
     req.log.error({ err }, "slack/history failed");
     res.status(500).json({ error: msg });
   }

@@ -1,0 +1,327 @@
+{
+  "name": "universal-design-skill",
+  "version": "1.0.0",
+  "description": "A comprehensive AI design skill synthesized from Impeccable, Taste Skill, UI/UX Pro Max, and Claude Frontend Design. Teaches production-grade visual design for web, mobile, and any UI surface.",
+  "sources": [
+    "Impeccable (impeccable.style) by Paul Bakaus",
+    "Taste Skill (tasteskill.dev) by Leonxlnx",
+    "UI/UX Pro Max Skill (ui-ux-pro-max-skill.com) by nextlevelbuilder",
+    "Claude Frontend Design Skill (github.com/anthropics/claude-code)"
+  ],
+
+  "core_philosophy": {
+    "principle": "Design with intent, not convention. Every visual decision must serve a purpose. Avoid AI slop — generic, template-like output that lacks context-specific character.",
+    "mandates": [
+      "No design should look like every other design.",
+      "Commit to a clear aesthetic point-of-view before writing a single line of code.",
+      "Match implementation complexity to aesthetic vision — maximalist needs elaborate code, minimalism needs surgical restraint.",
+      "Anti-slop: no placeholders, no half-finished output, no purely decorative motion.",
+      "Infer design language from the product type — a fintech dashboard is not a creative portfolio."
+    ]
+  },
+
+  "design_dials": {
+    "description": "Three tuneable dials that define the design posture of any project. Set these first.",
+    "DESIGN_VARIANCE": {
+      "range": "1 (safe/consistent) to 5 (bold/unexpected)",
+      "default": 3,
+      "guidance": "Higher variance = asymmetry, grid-breaking layouts, diagonal flows. Lower = refined grids, predictable hierarchy."
+    },
+    "MOTION_INTENSITY": {
+      "range": "1 (none) to 5 (cinematic)",
+      "default": 2,
+      "guidance": "Motion must serve interaction, never just add animation. Always respect prefers-reduced-motion."
+    },
+    "VISUAL_DENSITY": {
+      "range": "1 (airy/minimal) to 5 (data-dense/compact)",
+      "default": 2,
+      "guidance": "Match density to the use case — dashboards lean dense, landing pages lean airy."
+    }
+  },
+
+  "typography": {
+    "rules": [
+      "Never use Inter, Roboto, Arial, Open Sans, Lato, or system defaults as primary fonts.",
+      "Prefer: Playfair Display (editorial), JetBrains Mono (technical/code), IBM Plex (data), Bricolage Grotesque (distinctive), DM Serif Display (luxury).",
+      "Pair contrast extremes — display serif + monospace body, or variable-weight grotesque + geometric serif.",
+      "Use 3x+ scale ratios: e.g. 72px heading to 20px body — never timid mid-range scaling.",
+      "Variable font weights (100-900) over static mid-range (400-600) only.",
+      "Font size, weight, and line-height must be hierarchical — every level earns its role.",
+      "Load via Google Fonts or variable font CDN. Apply decisively — one primary family per composition.",
+      "Hero headline: max 2 lines. Subtext: max 20 words. CTA visible without scroll."
+    ],
+    "anti_patterns": [
+      "All body text the same size and weight",
+      "Inter as the default safe choice",
+      "Space Grotesk overused across generations",
+      "Font mixing without intentional contrast"
+    ]
+  },
+
+  "color_and_theme": {
+    "rules": [
+      "Commit to one cohesive theme — no light/dark mode flips mid-page.",
+      "Dominant colors with sharp accent outperform evenly-distributed palettes.",
+      "Use CSS variables (--color-primary, --color-accent, etc.) for full consistency.",
+      "Semantic color roles: primary, secondary, accent, surface, on-surface, error, success, warning.",
+      "Light mode: minimum 4.5:1 contrast ratio for body text.",
+      "Dark mode: glass/transparent elements must remain visible; borders must be perceptible.",
+      "Avoid purple gradients on white — the most overused AI-generated aesthetic.",
+      "Test both light and dark modes before delivery.",
+      "Color is never the only indicator (accessibility).",
+      "Palette restraint: fewer colors with intentional roles beats a rainbow."
+    ],
+    "palette_roles": {
+      "brand": "1-2 colors max — identity anchor",
+      "neutral": "3-5 grays — layout scaffolding",
+      "accent": "1 color — calls to action, highlights",
+      "semantic": "error (red), success (green), warning (amber)"
+    },
+    "anti_patterns": [
+      "Purple gradient on white/light background",
+      "Rainbow palettes with no hierarchy",
+      "Low-contrast text on colored backgrounds",
+      "Overusing accent color until it loses meaning"
+    ]
+  },
+
+  "spatial_design": {
+    "rules": [
+      "White space communicates relationships — don't fill every gap.",
+      "Spacing scale must be consistent: use a base-4 or base-8 system (4, 8, 12, 16, 24, 32, 48, 64px).",
+      "Navigation: max 80px tall at desktop, one line.",
+      "Bento grids: N items = N cells, no empty cells.",
+      "Layouts should use asymmetry, overlap, or diagonal flow when design variance > 2.",
+      "Generous negative space OR controlled density — never accidental clutter.",
+      "No content hidden behind fixed navbars.",
+      "Cards and containers: consistent border-radius across the entire system.",
+      "Hover states must never cause layout shift."
+    ],
+    "responsive_breakpoints": {
+      "mobile_sm": "320px",
+      "mobile": "375px",
+      "tablet": "768px",
+      "desktop_sm": "1024px",
+      "desktop": "1440px",
+      "wide": "1920px"
+    },
+    "anti_patterns": [
+      "Centering every single card/element (default CSS brain)",
+      "Inconsistent spacing with no underlying scale",
+      "Horizontal scroll on mobile",
+      "Empty bento cells"
+    ]
+  },
+
+  "motion_and_interaction": {
+    "rules": [
+      "Motion must serve a purpose: guide attention, confirm actions, reveal hierarchy.",
+      "Transition duration sweet spot: 150-300ms for UI micro-interactions.",
+      "Easing: ease-out for elements entering, ease-in for elements leaving, ease-in-out for position changes.",
+      "Always implement prefers-reduced-motion media query — disable/reduce animations.",
+      "Hover states: clear visual feedback on all interactive elements.",
+      "All clickable elements: cursor pointer.",
+      "Focus states must be visible for keyboard navigation (don't remove outline).",
+      "No purely decorative animation that adds nothing to comprehension."
+    ],
+    "micro_interactions": [
+      "Button press: subtle scale(0.97) + shadow reduction",
+      "Input focus: border color shift + shadow ring",
+      "Card hover: lift with translateY(-2px) + shadow deepening",
+      "Page transitions: fade or slide, not jarring cuts",
+      "Loading states: skeleton screens over spinners for content-heavy areas"
+    ],
+    "anti_patterns": [
+      "Animation that plays on page load with no user trigger",
+      "Transitions above 500ms for UI elements",
+      "Missing hover states on interactive elements",
+      "Removing focus outlines without replacement"
+    ]
+  },
+
+  "layout_systems": {
+    "web": {
+      "grid": "12-column fluid grid, 24px gutters at desktop, 16px at tablet, 16px at mobile",
+      "max_content_width": "1280px centered",
+      "section_vertical_rhythm": "80-120px between major sections at desktop",
+      "hero": "Full viewport or 80vh minimum, CTA above fold"
+    },
+    "mobile": {
+      "grid": "4-column grid, 16px margins, 8px gutters",
+      "touch_targets": "Minimum 44x44px for all interactive elements",
+      "bottom_nav": "Use for 3-5 primary destinations, never more",
+      "safe_areas": "Respect iOS safe area insets (env(safe-area-inset-*))",
+      "thumb_zone": "Primary actions in bottom 60% of screen"
+    },
+    "dashboard": {
+      "sidebar_width": "240-280px collapsible",
+      "content_area": "Fluid, min 600px",
+      "data_density": "Configurable by user preference when possible",
+      "empty_states": "Designed, never blank white space"
+    }
+  },
+
+  "component_library_standards": {
+    "icons": [
+      "Use SVG icons only — no emoji as icons.",
+      "Single consistent icon set per project: Heroicons, Lucide, or Phosphor.",
+      "Size: 16px (inline), 20px (UI), 24px (emphasis), 32px+ (illustration)."
+    ],
+    "buttons": [
+      "Primary, secondary, ghost, destructive — four variants minimum.",
+      "Loading state built in — never let a button sit idle during async ops.",
+      "Disabled state must be visually distinct but not confusing."
+    ],
+    "forms": [
+      "All inputs must have visible labels (no placeholder-only labels).",
+      "Inline validation — don't wait for submit to show errors.",
+      "Error messages are specific, not generic ('Invalid email' not 'Error')."
+    ],
+    "imagery": [
+      "All images have descriptive alt text.",
+      "Lazy load below-fold images.",
+      "Use aspect-ratio CSS property to prevent layout shift."
+    ]
+  },
+
+  "accessibility": {
+    "wcag_target": "AA minimum, AAA where feasible",
+    "rules": [
+      "Color contrast: 4.5:1 for normal text, 3:1 for large text (18px+ bold or 24px+ regular).",
+      "Color is never the sole indicator of state or meaning.",
+      "All interactive elements reachable and operable by keyboard.",
+      "ARIA labels on icon-only buttons.",
+      "Semantic HTML first — div-soup is never acceptable.",
+      "Screen reader tested: VoiceOver (iOS/macOS) and TalkBack (Android).",
+      "prefers-reduced-motion: always respected.",
+      "prefers-color-scheme: support both light and dark where possible."
+    ]
+  },
+
+  "ux_writing": {
+    "rules": [
+      "Zero em-dashes anywhere. Hyphens only.",
+      "Button labels: verb + noun ('Save changes', 'Create project', not just 'Submit').",
+      "Error messages: what went wrong + how to fix it.",
+      "Empty states: explain why it's empty + what the user can do.",
+      "Loading messages: tell the user what's happening, not just 'Loading...'.",
+      "Confirmation dialogs: restate the action in the button ('Delete project' not 'Yes')."
+    ],
+    "anti_patterns": [
+      "Lorem ipsum in any shipped interface",
+      "Generic 'Error occurred' messages",
+      "OK / Cancel as the only button labels",
+      "Truncating important labels"
+    ]
+  },
+
+  "platform_specific": {
+    "web_app": {
+      "performance": "Core Web Vitals: LCP < 2.5s, CLS < 0.1, INP < 200ms",
+      "fonts": "Preload critical fonts, use font-display: swap",
+      "images": "WebP/AVIF formats, responsive srcset",
+      "css_architecture": "CSS custom properties for theming, utility classes for layout"
+    },
+    "ios_native": {
+      "design_language": "Follow HIG (Human Interface Guidelines) as baseline, deviate with intent",
+      "typography": "SF Pro preferred but not required — custom fonts allowed with proper sizing",
+      "navigation": "NavigationStack over deprecated NavigationView in SwiftUI",
+      "safe_areas": "Always respect, never hardcode insets"
+    },
+    "android_native": {
+      "design_language": "Material Design 3 as baseline",
+      "dynamic_color": "Support Material You dynamic color where appropriate",
+      "navigation": "Bottom navigation for 3-5 destinations, navigation rail at tablet+"
+    },
+    "react_native": {
+      "styling": "StyleSheet.create for performance, NativeWind for utility classes",
+      "platform_specificity": "Use Platform.OS for divergent iOS/Android behavior",
+      "animations": "Reanimated 3 for 60fps native-driven animations"
+    },
+    "flutter": {
+      "theming": "ThemeData with full ColorScheme — no hardcoded colors in widgets",
+      "state": "Riverpod or Bloc — not setState for anything beyond local ephemeral state",
+      "responsive": "LayoutBuilder + MediaQuery for adaptive layouts"
+    }
+  },
+
+  "design_audit_checklist": {
+    "typography": [
+      "Font hierarchy is clear at every breakpoint",
+      "No generic default fonts",
+      "Line heights set (body: 1.5-1.7, headings: 1.1-1.3)"
+    ],
+    "color": [
+      "4.5:1 contrast on all text",
+      "Both light and dark modes tested",
+      "Semantic color roles documented"
+    ],
+    "layout": [
+      "No horizontal scroll at 320px",
+      "All touch targets >= 44x44px",
+      "Consistent spacing scale used throughout"
+    ],
+    "interaction": [
+      "All interactive elements have hover AND focus states",
+      "prefers-reduced-motion implemented",
+      "No layout shift on hover"
+    ],
+    "accessibility": [
+      "Semantic HTML used throughout",
+      "All images have alt text",
+      "Keyboard navigation fully functional",
+      "Color is not the only indicator of state"
+    ],
+    "ux_writing": [
+      "No lorem ipsum",
+      "No generic error messages",
+      "All empty states designed"
+    ]
+  },
+
+  "commands": {
+    "description": "Invoke these commands to apply specific design operations",
+    "list": {
+      "/polish": "Refine all visual details before deployment — spacing, contrast, font sizing, alignment",
+      "/audit": "Run full design audit checklist — accessibility, responsiveness, UX writing",
+      "/distill": "Remove unnecessary design elements, simplify without losing character",
+      "/bolder": "Increase visual emphasis — stronger type, higher contrast, more dominant color",
+      "/quieter": "Tone down aggressive elements — reduce saturation, lighten weights, add breathing room",
+      "/animate": "Add purposeful micro-interactions — hover states, transitions, loading feedback",
+      "/responsive": "Audit and fix all breakpoints from 320px to 1920px",
+      "/accessible": "Harden accessibility — contrast, ARIA, keyboard, reduced motion",
+      "/densify": "Increase information density while maintaining readability",
+      "/breathe": "Increase white space and reduce visual noise",
+      "/dark": "Generate or refine dark mode variant",
+      "/rebrand": "Replace color and font system with a fresh design language"
+    }
+  },
+
+  "anti_slop_ban_list": {
+    "fonts_to_avoid": [
+      "Inter",
+      "Roboto",
+      "Arial",
+      "Open Sans",
+      "Lato",
+      "Helvetica Neue as a design statement",
+      "Space Grotesk (overused)"
+    ],
+    "aesthetics_to_avoid": [
+      "Purple gradient on white/light background",
+      "Glassmorphism without clear purpose",
+      "Neumorphism (accessibility failure)",
+      "Card grid where every card is identical",
+      "Hero with stock photo + centered headline + single CTA",
+      "Infinite scroll without pagination option",
+      "Auto-playing carousels"
+    ],
+    "patterns_to_avoid": [
+      "Placeholder text in production",
+      "Disabled buttons with no explanation",
+      "Forms that only validate on submit",
+      "Modals triggered on page load",
+      "Fixed elements that cover content on mobile"
+    ]
+  }
+}
